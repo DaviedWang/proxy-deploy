@@ -13,6 +13,7 @@
 #   HY2_PASSWORD  Hysteria2 password (default: random, reused on re-run)
 #   HY2_PORT      Hysteria2 UDP port (default: random 50001-65000, reused on re-run)
 #   HOP_RANGE     UDP port-hopping range "A-B" (default 20000-50000; NO_HOP=1 disables)
+#   HY2_UP, HY2_DOWN  client bandwidth (Mbps) written into clash-meta.yaml (default 30 / 100)
 #   REALITY_PORT  Reality TCP port (default: 443 if free, else 8443, else random)
 #   REALITY_SNI   Reality target/SNI (default: auto-pick + end-to-end verified)
 #   KEEP_BBR=1    with --uninstall: keep BBR/sysctl tuning
@@ -615,7 +616,9 @@ EOF
     server: $1
     port: $HY2_PORT
 ${hopline:+$hopline
-}    password: $(yaml_sq "$HY2_PASSWORD")
+}    up: "${HY2_UP:-30} Mbps"
+    down: "${HY2_DOWN:-100} Mbps"
+    password: $(yaml_sq "$HY2_PASSWORD")
     sni: $HY2_SNI
     skip-cert-verify: false
     fingerprint: $HY2_PIN
@@ -715,7 +718,7 @@ Usage: bash deploy-proxy.sh [--show | --uninstall | --help]
   (no option)   install / re-run (reuses saved credentials in /etc/proxy-deploy/state.env)
   --show        re-print client links / QR codes, rewrite /root/proxy-client/
   --uninstall   remove Xray, Hysteria2, port hopping, BBR tuning (KEEP_BBR=1 to keep), state
-Env: NODE_NAME SERVER_ADDR HY2_PASSWORD HY2_PORT HOP_RANGE NO_HOP=1 REALITY_PORT REALITY_SNI KEEP_BBR=1
+Env: NODE_NAME SERVER_ADDR HY2_PASSWORD HY2_PORT HOP_RANGE NO_HOP=1 HY2_UP HY2_DOWN REALITY_PORT REALITY_SNI KEEP_BBR=1
 EOF
 }
 

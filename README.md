@@ -47,6 +47,7 @@ NODE_NAME=SG1 HY2_PORT=40443 REALITY_PORT=443 bash deploy-proxy.sh
 | `HY2_PASSWORD` | 随机 20 位 | Hysteria2 密码（想沿用旧客户端时指定原密码） |
 | `HY2_PORT` | 随机 50001-65000 | Hysteria2 UDP 端口 |
 | `HOP_RANGE` | `20000-50000` | 端口跳跃范围；`NO_HOP=1` 关闭跳跃 |
+| `HY2_UP` / `HY2_DOWN` | `30` / `100` | 写进 Clash 配置的 Hy2 上下行带宽（Mbps），晚高峰丢包时更稳 |
 | `REALITY_PORT` | 443（被占用则 8443） | Reality TCP 端口 |
 | `REALITY_SNI` | 自动挑选 | 伪装站点。默认在 dl.google.com / www.amazon.com / www.microsoft.com / www.apple.com 中测速，并**实际跑通一次 Reality 才采用**；apple 排最后（Xray 官方提示 apple/icloud 容易被标记） |
 
