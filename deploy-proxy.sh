@@ -590,7 +590,7 @@ mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: info
-ipv6: true
+ipv6: false
 
 proxies:
 EOF
@@ -652,6 +652,29 @@ $pnames
     url: $TEST_URL
     interval: 120
 
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "*.lan"
+    - "+.local"
+    - "geosite:cn"
+    - "+.apple.com"
+    - "+.icloud.com"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+  nameserver:
+    - https://1.1.1.1/dns-query#PROXY
+    - https://8.8.8.8/dns-query#PROXY
+  nameserver-policy:
+    "geosite:cn,apple":
+      - https://223.5.5.5/dns-query
+      - https://doh.pub/dns-query
 rules:
   - GEOIP,LAN,DIRECT,no-resolve
   - DOMAIN-SUFFIX,apple.com,DIRECT
@@ -665,7 +688,8 @@ rules:
   - DOMAIN-SUFFIX,aaplimg.com,DIRECT
   - DOMAIN-SUFFIX,apple.news,DIRECT
   - DOMAIN-SUFFIX,me.com,DIRECT
-  - GEOIP,CN,DIRECT
+  - GEOSITE,CN,DIRECT
+  - GEOIP,CN,DIRECT,no-resolve
   - MATCH,PROXY
 EOF
   } > "$yml"
